@@ -563,10 +563,9 @@ a:focus-visible, button:focus-visible{
 .country-list button .n{ font-size:11px; color:var(--ink-soft); opacity:0.5; width:18px; }
 
 /* ============================================================
-   4b. GALERI — "Momen di Kafe"
-   Gaya "dinding foto jurnal": kartu ala polaroid tersusun masonry,
-   rotasi natural per kartu, aksen washi-tape — konsisten dengan
-   motif polaroid & jurnal yang sudah dipakai di seksi Cerita & Peta.
+   4b. GALERI — Bento Grid
+   Layout bento asimetris: satu foto focal point besar + variasi
+   ukuran kartu lain. Desktop 4 kolom, tablet 2 kolom, mobile 1 kolom.
 ============================================================ */
 .gallery-section{
   padding-block:clamp(72px,10vw,120px);
@@ -574,114 +573,111 @@ a:focus-visible, button:focus-visible{
     radial-gradient(circle at 15% 20%, rgba(140,98,57,0.07), transparent 40%),
     radial-gradient(circle at 85% 80%, rgba(140,98,57,0.06), transparent 42%),
     var(--paper-deep);
-  position:relative;
-  overflow:hidden;
 }
 .gallery-section .section-head{ margin-inline:auto; text-align:center; max-width:600px; }
 .gallery-section .section-head::after{ content:none; }
 
-.gallery-grid{
+.bento-grid{
   margin-top:clamp(32px,6vw,56px);
-  columns:2;
-  column-gap:22px;
+  display:grid;
+  grid-template-columns:repeat(4, 1fr);
+  grid-auto-rows:200px;
+  grid-auto-flow:row dense;
+  gap:20px;
 }
-@media (min-width:640px){ .gallery-grid{ columns:3; column-gap:26px; } }
-@media (min-width:1040px){ .gallery-grid{ columns:4; column-gap:28px; } }
+.bento-item:nth-child(1){ grid-column:span 2; grid-row:span 2; } /* focal point */
+.bento-item:nth-child(2){ grid-column:span 1; grid-row:span 2; } /* tinggi */
+.bento-item:nth-child(3){ grid-column:span 1; grid-row:span 1; }
+.bento-item:nth-child(4){ grid-column:span 1; grid-row:span 1; }
+.bento-item:nth-child(5){ grid-column:span 1; grid-row:span 1; }
+.bento-item:nth-child(6){ grid-column:span 1; grid-row:span 1; }
+.bento-item:nth-child(7){ grid-column:span 2; grid-row:span 1; } /* lebar */
+.bento-item:nth-child(8){ grid-column:span 1; grid-row:span 1; }
 
-.gallery-item{
-  display:inline-block;
-  width:100%;
-  break-inside:avoid;
-  margin-bottom:22px;
+@media (min-width:640px) and (max-width:1039px){
+  .bento-grid{ grid-template-columns:repeat(2, 1fr); grid-auto-rows:220px; }
+  .bento-item:nth-child(1){ grid-column:span 2; grid-row:span 1; }
+  .bento-item:nth-child(2),
+  .bento-item:nth-child(3),
+  .bento-item:nth-child(4),
+  .bento-item:nth-child(5),
+  .bento-item:nth-child(6),
+  .bento-item:nth-child(8){ grid-column:span 1; grid-row:span 1; }
+  .bento-item:nth-child(7){ grid-column:span 2; grid-row:span 1; }
+}
+@media (max-width:639px){
+  .bento-grid{ grid-template-columns:1fr; grid-auto-rows:auto; gap:16px; }
+  .bento-item{ grid-column:span 1 !important; grid-row:span 1 !important; }
+  .bento-item .bento-photo{ aspect-ratio:4/3; }
+}
+
+.bento-item{
   position:relative;
-}
-@media (min-width:640px){ .gallery-item{ margin-bottom:26px; } }
-
-/* rotasi natural bergantian, memberi kesan foto ditempel tangan */
-.gallery-item:nth-child(6n+1) .gallery-frame{ transform:rotate(-2.4deg); }
-.gallery-item:nth-child(6n+2) .gallery-frame{ transform:rotate(1.6deg); }
-.gallery-item:nth-child(6n+3) .gallery-frame{ transform:rotate(-1.1deg); }
-.gallery-item:nth-child(6n+4) .gallery-frame{ transform:rotate(2.2deg); }
-.gallery-item:nth-child(6n+5) .gallery-frame{ transform:rotate(-1.8deg); }
-.gallery-item:nth-child(6n+6) .gallery-frame{ transform:rotate(1.1deg); }
-
-.gallery-frame{
-  display:block;
-  background:#fffdf8;
-  padding:10px 10px 16px;
-  border-radius:2px;
-  box-shadow:0 18px 34px -16px rgba(35,25,15,0.32), 0 2px 0 rgba(255,255,255,0.5) inset;
-  cursor:pointer;
-  transition:transform .35s cubic-bezier(.2,.8,.2,1), box-shadow .35s ease;
-}
-.gallery-item:hover .gallery-frame,
-.gallery-item:focus-within .gallery-frame{
-  transform:rotate(0deg) translateY(-6px) scale(1.02) !important;
-  box-shadow:0 28px 50px -18px rgba(35,25,15,0.42);
-  z-index:5;
-}
-
-.gallery-photo{
-  position:relative;
+  border-radius:18px;
   overflow:hidden;
-  border-radius:1px;
-  background:linear-gradient(155deg, var(--gc1, #8c6239), var(--gc2, #3d2b1f) 78%);
-  aspect-ratio:4/5;
+  cursor:pointer;
+  box-shadow:0 14px 32px -16px rgba(35,25,15,0.28);
+  opacity:0; transform:translateY(24px);
+  transition:opacity .6s ease, transform .6s ease, box-shadow .35s ease;
 }
-.gallery-item:nth-child(4n+2) .gallery-photo{ aspect-ratio:1/1; }
-.gallery-item:nth-child(4n+3) .gallery-photo{ aspect-ratio:3/4; }
-.gallery-item:nth-child(5n+4) .gallery-photo{ aspect-ratio:4/3; }
+.bento-item.in{ opacity:1; transform:translateY(0); }
+.bento-item:hover{ box-shadow:0 22px 44px -16px rgba(35,25,15,0.38); }
 
-.gallery-photo img{
+.bento-photo{
+  position:relative;
+  width:100%; height:100%;
+  background:linear-gradient(155deg, var(--gc1, #8c6239), var(--gc2, #3d2b1f) 78%);
+}
+.bento-item:nth-child(1) .bento-photo,
+.bento-item:nth-child(2) .bento-photo{ aspect-ratio:auto; }
+
+.bento-photo img{
   position:absolute; inset:0;
   width:100%; height:100%; object-fit:cover;
   z-index:1;
-  transition:transform .6s ease;
+  transition:transform .35s ease;
 }
-.gallery-item:hover .gallery-photo img{ transform:scale(1.08); }
+.bento-item:hover .bento-photo img{ transform:scale(1.05); }
 
-.gallery-photo::after{ /* vignette halus agar ikon & foto menyatu dgn palet */
-  content:"";
-  position:absolute; inset:0; z-index:2; pointer-events:none;
-  background:linear-gradient(180deg, rgba(0,0,0,0) 55%, rgba(20,14,10,0.28) 100%);
-}
-.gallery-item-icon{
+.bento-item-icon{
   position:absolute; inset:0;
   display:flex; align-items:center; justify-content:center;
-  font-size:30px; opacity:0.9; z-index:0;
+  font-size:clamp(26px,4vw,40px); opacity:0.9; z-index:0;
 }
-.gallery-zoom-hint{
-  position:absolute; top:10px; right:10px; z-index:3;
-  width:28px; height:28px; border-radius:50%;
+
+.bento-overlay{
+  position:absolute; inset:0; z-index:2;
+  background:rgba(20,14,10,0);
+  display:flex; align-items:flex-end;
+  padding:20px;
+  transition:background .3s ease;
+}
+.bento-item:hover .bento-overlay,
+.bento-item:focus-visible .bento-overlay{
   background:rgba(20,14,10,0.45);
+}
+.bento-overlay-text{
   color:#fff8ee;
-  display:flex; align-items:center; justify-content:center;
-  font-size:13px;
-  opacity:0; transform:scale(0.8);
-  transition:opacity .25s ease, transform .25s ease;
+  opacity:0; transform:translateY(8px);
+  transition:opacity .3s ease, transform .3s ease;
 }
-.gallery-item:hover .gallery-zoom-hint,
-.gallery-item:focus-within .gallery-zoom-hint{ opacity:1; transform:scale(1); }
-
-.gallery-frame figcaption{
-  margin-top:12px;
+.bento-item:hover .bento-overlay-text,
+.bento-item:focus-visible .bento-overlay-text{
+  opacity:1; transform:translateY(0);
+}
+.bento-overlay-cat{
+  display:inline-block;
+  font-size:10.5px; letter-spacing:0.12em; text-transform:uppercase;
+  font-weight:600; color:#e8cfa8;
+  border:1px solid rgba(232,207,168,0.5);
+  border-radius:999px;
+  padding:4px 10px;
+  margin-bottom:8px;
+}
+.bento-overlay-title{
   font-family:var(--font-display); font-style:italic;
-  font-size:13.5px; color:var(--ink-soft);
-  text-align:center;
-  line-height:1.4;
+  font-size:15px; line-height:1.3;
 }
-
-/* aksen washi-tape pada sebagian kartu untuk kesan scrapbook premium */
-.gallery-item.taped .gallery-frame::before{
-  content:"";
-  position:absolute; top:-10px; left:50%;
-  width:56px; height:20px;
-  background:rgba(200,168,120,0.55);
-  border:1px solid rgba(255,255,255,0.4);
-  transform:translateX(-50%) rotate(-4deg);
-  box-shadow:0 3px 6px rgba(35,25,15,0.18);
-}
-.gallery-item.taped:nth-child(3n) .gallery-frame::before{ transform:translateX(-50%) rotate(4deg); }
 
 .gallery-note{
   margin-top:30px; text-align:center;
@@ -1006,97 +1002,120 @@ a:focus-visible, button:focus-visible{
   </div>
 </div>
 
-<!-- =============================== GALERI / MOMEN =============================== -->
+<!-- =============================== GALERI / MOMEN (BENTO GRID) =============================== -->
 <section class="gallery-section" id="galeri">
   <div class="container">
     <div class="section-head reveal">
       <span class="eyebrow" style="justify-content:center;">Momen di Kafe</span>
       <h2>Diambil dari sudut favorit pelanggan.</h2>
-      <p>Kumpulan momen di jelajah27_coffee — dari sudut baca, meja komunitas, sampai racikan manual brew.</p>
+      <p>Kumpulan momen di jelajah27_coffee — dari sudut baca, racikan kopi, sampai menu andalan.</p>
     </div>
 
-    <div class="gallery-grid reveal" id="galleryGrid">
-      <!-- ⚠️ PLACEHOLDER: ganti src pada setiap <img> dengan foto asli kafe.
-           Jika file foto belum ada / gagal dimuat, ikon & gradasi akan tampil otomatis sebagai fallback,
-           jadi struktur ini aman dipakai sebelum foto tersedia. -->
-      <figure class="gallery-item taped" style="--gc1:#8c6239; --gc2:#3d2b1f;" tabindex="0" data-caption="Sudut baca dekat jendela">
-        <div class="gallery-frame">
-          <div class="gallery-photo">
-            <span class="gallery-item-icon">☕</span>
-            <img src="assets/gallery/moment-01.jpg" alt="Sudut baca dekat jendela" loading="lazy" onerror="this.style.display='none'">
-            <span class="gallery-zoom-hint">＋</span>
+    <!-- ⚠️ PLACEHOLDER: ganti src pada setiap <img> dengan foto asli kafe.
+         Jika file foto belum ada / gagal dimuat, ikon & gradasi akan tampil otomatis sebagai fallback,
+         jadi struktur ini aman dipakai sebelum foto tersedia. -->
+    <div class="bento-grid" id="galleryGrid">
+      <figure class="bento-item" style="--gc1:#8c6239; --gc2:#3d2b1f;" tabindex="0" data-category="Interior" data-title="Sudut baca dekat jendela">
+        <div class="bento-photo">
+          <span class="bento-item-icon">🪴</span>
+          <img src="assets/gallery/moment-01.jpg" alt="Sudut baca dekat jendela" loading="lazy" onerror="this.style.display='none'">
+        </div>
+        <div class="bento-overlay">
+          <div class="bento-overlay-text">
+            <span class="bento-overlay-cat">Interior</span>
+            <p class="bento-overlay-title">Sudut baca dekat jendela</p>
           </div>
-          <figcaption>Sudut baca dekat jendela</figcaption>
         </div>
       </figure>
-      <figure class="gallery-item" style="--gc1:#6b4a29; --gc2:#241c16;" tabindex="0" data-caption="Meja komunitas WFH">
-        <div class="gallery-frame">
-          <div class="gallery-photo">
-            <span class="gallery-item-icon">💻</span>
-            <img src="assets/gallery/moment-02.jpg" alt="Meja komunitas WFH" loading="lazy" onerror="this.style.display='none'">
-            <span class="gallery-zoom-hint">＋</span>
+
+      <figure class="bento-item" style="--gc1:#6b4a29; --gc2:#241c16;" tabindex="0" data-category="Coffee" data-title="Racikan manual brew">
+        <div class="bento-photo">
+          <span class="bento-item-icon">🫖</span>
+          <img src="assets/gallery/moment-02.jpg" alt="Racikan manual brew" loading="lazy" onerror="this.style.display='none'">
+        </div>
+        <div class="bento-overlay">
+          <div class="bento-overlay-text">
+            <span class="bento-overlay-cat">Coffee</span>
+            <p class="bento-overlay-title">Racikan manual brew</p>
           </div>
-          <figcaption>Meja komunitas WFH</figcaption>
         </div>
       </figure>
-      <figure class="gallery-item taped" style="--gc1:#a3734a; --gc2:#3d2b1f;" tabindex="0" data-caption="Racikan manual brew">
-        <div class="gallery-frame">
-          <div class="gallery-photo">
-            <span class="gallery-item-icon">🫖</span>
-            <img src="assets/gallery/moment-03.jpg" alt="Racikan manual brew" loading="lazy" onerror="this.style.display='none'">
-            <span class="gallery-zoom-hint">＋</span>
+
+      <figure class="bento-item" style="--gc1:#a3734a; --gc2:#3d2b1f;" tabindex="0" data-category="Interior" data-title="Meja komunitas WFH">
+        <div class="bento-photo">
+          <span class="bento-item-icon">💻</span>
+          <img src="assets/gallery/moment-03.jpg" alt="Meja komunitas WFH" loading="lazy" onerror="this.style.display='none'">
+        </div>
+        <div class="bento-overlay">
+          <div class="bento-overlay-text">
+            <span class="bento-overlay-cat">Interior</span>
+            <p class="bento-overlay-title">Meja komunitas WFH</p>
           </div>
-          <figcaption>Racikan manual brew</figcaption>
         </div>
       </figure>
-      <figure class="gallery-item" style="--gc1:#7a5636; --gc2:#241c16;" tabindex="0" data-caption="Detail interior vintage">
-        <div class="gallery-frame">
-          <div class="gallery-photo">
-            <span class="gallery-item-icon">🪴</span>
-            <img src="assets/gallery/moment-04.jpg" alt="Detail interior vintage" loading="lazy" onerror="this.style.display='none'">
-            <span class="gallery-zoom-hint">＋</span>
+
+      <figure class="bento-item" style="--gc1:#7a5636; --gc2:#241c16;" tabindex="0" data-category="Dessert" data-title="Toast &amp; pastry hangat">
+        <div class="bento-photo">
+          <span class="bento-item-icon">🥐</span>
+          <img src="assets/gallery/moment-04.jpg" alt="Toast dan pastry hangat" loading="lazy" onerror="this.style.display='none'">
+        </div>
+        <div class="bento-overlay">
+          <div class="bento-overlay-text">
+            <span class="bento-overlay-cat">Dessert</span>
+            <p class="bento-overlay-title">Toast &amp; pastry hangat</p>
           </div>
-          <figcaption>Detail interior vintage</figcaption>
         </div>
       </figure>
-      <figure class="gallery-item taped" style="--gc1:#8c6239; --gc2:#5c4d3f;" tabindex="0" data-caption="Ngobrol santai sore hari">
-        <div class="gallery-frame">
-          <div class="gallery-photo">
-            <span class="gallery-item-icon">👥</span>
-            <img src="assets/gallery/moment-05.jpg" alt="Ngobrol santai sore hari" loading="lazy" onerror="this.style.display='none'">
-            <span class="gallery-zoom-hint">＋</span>
+
+      <figure class="bento-item" style="--gc1:#8c6239; --gc2:#5c4d3f;" tabindex="0" data-category="Signature Menu" data-title="Menu andalan siap disajikan">
+        <div class="bento-photo">
+          <span class="bento-item-icon">📸</span>
+          <img src="assets/gallery/moment-05.jpg" alt="Menu andalan siap disajikan" loading="lazy" onerror="this.style.display='none'">
+        </div>
+        <div class="bento-overlay">
+          <div class="bento-overlay-text">
+            <span class="bento-overlay-cat">Signature Menu</span>
+            <p class="bento-overlay-title">Menu andalan siap disajikan</p>
           </div>
-          <figcaption>Ngobrol santai sore hari</figcaption>
         </div>
       </figure>
-      <figure class="gallery-item" style="--gc1:#6b4a29; --gc2:#3d2b1f;" tabindex="0" data-caption="Menu andalan siap disajikan">
-        <div class="gallery-frame">
-          <div class="gallery-photo">
-            <span class="gallery-item-icon">📸</span>
-            <img src="assets/gallery/moment-06.jpg" alt="Menu andalan siap disajikan" loading="lazy" onerror="this.style.display='none'">
-            <span class="gallery-zoom-hint">＋</span>
+
+      <figure class="bento-item" style="--gc1:#6b4a29; --gc2:#3d2b1f;" tabindex="0" data-category="Interior" data-title="Ngobrol santai sore hari">
+        <div class="bento-photo">
+          <span class="bento-item-icon">👥</span>
+          <img src="assets/gallery/moment-06.jpg" alt="Ngobrol santai sore hari" loading="lazy" onerror="this.style.display='none'">
+        </div>
+        <div class="bento-overlay">
+          <div class="bento-overlay-text">
+            <span class="bento-overlay-cat">Interior</span>
+            <p class="bento-overlay-title">Ngobrol santai sore hari</p>
           </div>
-          <figcaption>Menu andalan siap disajikan</figcaption>
         </div>
       </figure>
-      <figure class="gallery-item taped" style="--gc1:#a3734a; --gc2:#241c16;" tabindex="0" data-caption="Suasana malam yang hangat">
-        <div class="gallery-frame">
-          <div class="gallery-photo">
-            <span class="gallery-item-icon">🌙</span>
-            <img src="assets/gallery/moment-07.jpg" alt="Suasana malam yang hangat" loading="lazy" onerror="this.style.display='none'">
-            <span class="gallery-zoom-hint">＋</span>
+
+      <figure class="bento-item" style="--gc1:#a3734a; --gc2:#241c16;" tabindex="0" data-category="Interior" data-title="Suasana malam yang hangat">
+        <div class="bento-photo">
+          <span class="bento-item-icon">🌙</span>
+          <img src="assets/gallery/moment-07.jpg" alt="Suasana malam yang hangat" loading="lazy" onerror="this.style.display='none'">
+        </div>
+        <div class="bento-overlay">
+          <div class="bento-overlay-text">
+            <span class="bento-overlay-cat">Interior</span>
+            <p class="bento-overlay-title">Suasana malam yang hangat</p>
           </div>
-          <figcaption>Suasana malam yang hangat</figcaption>
         </div>
       </figure>
-      <figure class="gallery-item" style="--gc1:#5c4d3f; --gc2:#241c16;" tabindex="0" data-caption="Sesi seduh pagi hari">
-        <div class="gallery-frame">
-          <div class="gallery-photo">
-            <span class="gallery-item-icon">🌤️</span>
-            <img src="assets/gallery/moment-08.jpg" alt="Sesi seduh pagi hari" loading="lazy" onerror="this.style.display='none'">
-            <span class="gallery-zoom-hint">＋</span>
+
+      <figure class="bento-item" style="--gc1:#5c4d3f; --gc2:#241c16;" tabindex="0" data-category="Coffee" data-title="Sesi seduh pagi hari">
+        <div class="bento-photo">
+          <span class="bento-item-icon">🌤️</span>
+          <img src="assets/gallery/moment-08.jpg" alt="Sesi seduh pagi hari" loading="lazy" onerror="this.style.display='none'">
+        </div>
+        <div class="bento-overlay">
+          <div class="bento-overlay-text">
+            <span class="bento-overlay-cat">Coffee</span>
+            <p class="bento-overlay-title">Sesi seduh pagi hari</p>
           </div>
-          <figcaption>Sesi seduh pagi hari</figcaption>
         </div>
       </figure>
     </div>
@@ -1461,9 +1480,10 @@ let lastGalleryFocus = null;
 
 function openLightbox(item){
   lastGalleryFocus = document.activeElement;
-  const img = item.querySelector('.gallery-photo img');
-  const icon = item.querySelector('.gallery-item-icon');
-  const caption = item.dataset.caption || '';
+  const img = item.querySelector('.bento-photo img');
+  const icon = item.querySelector('.bento-item-icon');
+  const category = item.dataset.category || '';
+  const title = item.dataset.title || '';
   const gc1 = item.style.getPropertyValue('--gc1') || '#8c6239';
   const gc2 = item.style.getPropertyValue('--gc2') || '#3d2b1f';
 
@@ -1480,7 +1500,7 @@ function openLightbox(item){
     lightboxIcon.style.display = 'block';
     lightboxIcon.textContent = icon ? icon.textContent : '📷';
   }
-  lightboxCaption.textContent = caption;
+  lightboxCaption.textContent = category ? `${category} — ${title}` : title;
   lightboxOverlay.classList.add('open');
   document.body.style.overflow = 'hidden';
   lightboxClose.focus();
@@ -1490,13 +1510,27 @@ function closeLightbox(){
   document.body.style.overflow = '';
   if(lastGalleryFocus) lastGalleryFocus.focus();
 }
-document.querySelectorAll('.gallery-item').forEach(item=>{
+document.querySelectorAll('.bento-item').forEach(item=>{
   item.addEventListener('click', ()=> openLightbox(item));
   item.addEventListener('keypress', (e)=>{ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); openLightbox(item); } });
 });
 lightboxClose.addEventListener('click', closeLightbox);
 lightboxOverlay.addEventListener('click', (e)=>{ if(e.target === lightboxOverlay) closeLightbox(); });
 document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape' && lightboxOverlay.classList.contains('open')) closeLightbox(); });
+
+/* fade-up animasi per kartu bento saat section muncul di viewport (staggered) */
+const bentoObserver = new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      document.querySelectorAll('.bento-item').forEach((el, idx)=>{
+        setTimeout(()=> el.classList.add('in'), idx * 90);
+      });
+      bentoObserver.disconnect();
+    }
+  });
+}, { threshold:0.15 });
+const bentoGridEl = document.getElementById('galleryGrid');
+if(bentoGridEl) bentoObserver.observe(bentoGridEl);
 
 /* ============================================================
    REVEAL ON SCROLL
