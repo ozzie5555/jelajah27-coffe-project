@@ -564,64 +564,136 @@ a:focus-visible, button:focus-visible{
 
 /* ============================================================
    4b. GALERI — "Momen di Kafe"
+   Gaya "dinding foto jurnal": kartu ala polaroid tersusun masonry,
+   rotasi natural per kartu, aksen washi-tape — konsisten dengan
+   motif polaroid & jurnal yang sudah dipakai di seksi Cerita & Peta.
 ============================================================ */
 .gallery-section{
   padding-block:clamp(72px,10vw,120px);
-  background:var(--paper-deep);
+  background:
+    radial-gradient(circle at 15% 20%, rgba(140,98,57,0.07), transparent 40%),
+    radial-gradient(circle at 85% 80%, rgba(140,98,57,0.06), transparent 42%),
+    var(--paper-deep);
+  position:relative;
+  overflow:hidden;
 }
 .gallery-section .section-head{ margin-inline:auto; text-align:center; max-width:600px; }
 .gallery-section .section-head::after{ content:none; }
 
 .gallery-grid{
-  margin-top:clamp(28px,5vw,48px);
-  display:grid;
-  grid-template-columns:repeat(2, 1fr);
-  gap:12px;
+  margin-top:clamp(32px,6vw,56px);
+  columns:2;
+  column-gap:22px;
 }
-@media (min-width:640px){ .gallery-grid{ grid-template-columns:repeat(3, 1fr); gap:16px; } }
-@media (min-width:960px){ .gallery-grid{ grid-template-columns:repeat(4, 1fr); gap:18px; } }
+@media (min-width:640px){ .gallery-grid{ columns:3; column-gap:26px; } }
+@media (min-width:1040px){ .gallery-grid{ columns:4; column-gap:28px; } }
 
 .gallery-item{
+  display:inline-block;
+  width:100%;
+  break-inside:avoid;
+  margin-bottom:22px;
   position:relative;
-  aspect-ratio:1/1;
-  border-radius:var(--radius-md);
-  overflow:hidden;
-  cursor:pointer;
-  border:1px solid var(--line);
-  background:linear-gradient(155deg, var(--gc1, #8c6239), var(--gc2, #3d2b1f) 75%);
 }
-.gallery-item.tall{ grid-row:span 2; aspect-ratio:auto; }
-@media (max-width:639px){ .gallery-item.tall{ grid-row:span 1; aspect-ratio:1/1; } }
+@media (min-width:640px){ .gallery-item{ margin-bottom:26px; } }
 
-.gallery-item img{
+/* rotasi natural bergantian, memberi kesan foto ditempel tangan */
+.gallery-item:nth-child(6n+1) .gallery-frame{ transform:rotate(-2.4deg); }
+.gallery-item:nth-child(6n+2) .gallery-frame{ transform:rotate(1.6deg); }
+.gallery-item:nth-child(6n+3) .gallery-frame{ transform:rotate(-1.1deg); }
+.gallery-item:nth-child(6n+4) .gallery-frame{ transform:rotate(2.2deg); }
+.gallery-item:nth-child(6n+5) .gallery-frame{ transform:rotate(-1.8deg); }
+.gallery-item:nth-child(6n+6) .gallery-frame{ transform:rotate(1.1deg); }
+
+.gallery-frame{
+  display:block;
+  background:#fffdf8;
+  padding:10px 10px 16px;
+  border-radius:2px;
+  box-shadow:0 18px 34px -16px rgba(35,25,15,0.32), 0 2px 0 rgba(255,255,255,0.5) inset;
+  cursor:pointer;
+  transition:transform .35s cubic-bezier(.2,.8,.2,1), box-shadow .35s ease;
+}
+.gallery-item:hover .gallery-frame,
+.gallery-item:focus-within .gallery-frame{
+  transform:rotate(0deg) translateY(-6px) scale(1.02) !important;
+  box-shadow:0 28px 50px -18px rgba(35,25,15,0.42);
+  z-index:5;
+}
+
+.gallery-photo{
+  position:relative;
+  overflow:hidden;
+  border-radius:1px;
+  background:linear-gradient(155deg, var(--gc1, #8c6239), var(--gc2, #3d2b1f) 78%);
+  aspect-ratio:4/5;
+}
+.gallery-item:nth-child(4n+2) .gallery-photo{ aspect-ratio:1/1; }
+.gallery-item:nth-child(4n+3) .gallery-photo{ aspect-ratio:3/4; }
+.gallery-item:nth-child(5n+4) .gallery-photo{ aspect-ratio:4/3; }
+
+.gallery-photo img{
   position:absolute; inset:0;
   width:100%; height:100%; object-fit:cover;
   z-index:1;
-  transition:transform .5s ease;
+  transition:transform .6s ease;
 }
-.gallery-item:hover img{ transform:scale(1.06); }
+.gallery-item:hover .gallery-photo img{ transform:scale(1.08); }
+
+.gallery-photo::after{ /* vignette halus agar ikon & foto menyatu dgn palet */
+  content:"";
+  position:absolute; inset:0; z-index:2; pointer-events:none;
+  background:linear-gradient(180deg, rgba(0,0,0,0) 55%, rgba(20,14,10,0.28) 100%);
+}
 .gallery-item-icon{
   position:absolute; inset:0;
   display:flex; align-items:center; justify-content:center;
-  font-size:26px; opacity:0.85; z-index:0;
+  font-size:30px; opacity:0.9; z-index:0;
 }
-.gallery-item-caption{
-  position:absolute; left:0; right:0; bottom:0; z-index:2;
-  padding:20px 12px 10px;
-  background:linear-gradient(180deg, transparent, rgba(20,14,10,0.75));
-  color:#f2e9db; font-size:12px; font-weight:500;
-  opacity:0; transform:translateY(6px);
+.gallery-zoom-hint{
+  position:absolute; top:10px; right:10px; z-index:3;
+  width:28px; height:28px; border-radius:50%;
+  background:rgba(20,14,10,0.45);
+  color:#fff8ee;
+  display:flex; align-items:center; justify-content:center;
+  font-size:13px;
+  opacity:0; transform:scale(0.8);
   transition:opacity .25s ease, transform .25s ease;
 }
-.gallery-item:hover .gallery-item-caption,
-.gallery-item:focus-visible .gallery-item-caption{ opacity:1; transform:translateY(0); }
+.gallery-item:hover .gallery-zoom-hint,
+.gallery-item:focus-within .gallery-zoom-hint{ opacity:1; transform:scale(1); }
+
+.gallery-frame figcaption{
+  margin-top:12px;
+  font-family:var(--font-display); font-style:italic;
+  font-size:13.5px; color:var(--ink-soft);
+  text-align:center;
+  line-height:1.4;
+}
+
+/* aksen washi-tape pada sebagian kartu untuk kesan scrapbook premium */
+.gallery-item.taped .gallery-frame::before{
+  content:"";
+  position:absolute; top:-10px; left:50%;
+  width:56px; height:20px;
+  background:rgba(200,168,120,0.55);
+  border:1px solid rgba(255,255,255,0.4);
+  transform:translateX(-50%) rotate(-4deg);
+  box-shadow:0 3px 6px rgba(35,25,15,0.18);
+}
+.gallery-item.taped:nth-child(3n) .gallery-frame::before{ transform:translateX(-50%) rotate(4deg); }
 
 .gallery-note{
-  margin-top:22px; text-align:center;
+  margin-top:30px; text-align:center;
   font-size:13.5px; color:var(--ink-soft);
 }
-.gallery-note a{ color:var(--accent-deep); font-weight:600; text-decoration:none; }
-.gallery-note a:hover{ text-decoration:underline; }
+.gallery-note a{
+  display:inline-flex; align-items:center; gap:6px;
+  color:var(--accent-deep); font-weight:600; text-decoration:none;
+  border-bottom:1px solid transparent;
+  transition:border-color .2s ease;
+}
+.gallery-note a:hover{ border-color:var(--accent-deep); }
 
 .lightbox-overlay{
   position:fixed; inset:0; z-index:210;
@@ -947,44 +1019,89 @@ a:focus-visible, button:focus-visible{
       <!-- ⚠️ PLACEHOLDER: ganti src pada setiap <img> dengan foto asli kafe.
            Jika file foto belum ada / gagal dimuat, ikon & gradasi akan tampil otomatis sebagai fallback,
            jadi struktur ini aman dipakai sebelum foto tersedia. -->
-      <figure class="gallery-item tall" style="--gc1:#8c6239; --gc2:#3d2b1f;" tabindex="0" data-caption="Sudut baca dekat jendela">
-        <span class="gallery-item-icon">☕</span>
-        <img src="assets/gallery/moment-01.jpg" alt="Sudut baca dekat jendela" loading="lazy" onerror="this.style.display='none'">
-        <figcaption class="gallery-item-caption">Sudut baca dekat jendela</figcaption>
+      <figure class="gallery-item taped" style="--gc1:#8c6239; --gc2:#3d2b1f;" tabindex="0" data-caption="Sudut baca dekat jendela">
+        <div class="gallery-frame">
+          <div class="gallery-photo">
+            <span class="gallery-item-icon">☕</span>
+            <img src="assets/gallery/moment-01.jpg" alt="Sudut baca dekat jendela" loading="lazy" onerror="this.style.display='none'">
+            <span class="gallery-zoom-hint">＋</span>
+          </div>
+          <figcaption>Sudut baca dekat jendela</figcaption>
+        </div>
       </figure>
       <figure class="gallery-item" style="--gc1:#6b4a29; --gc2:#241c16;" tabindex="0" data-caption="Meja komunitas WFH">
-        <span class="gallery-item-icon">💻</span>
-        <img src="assets/gallery/moment-02.jpg" alt="Meja komunitas WFH" loading="lazy" onerror="this.style.display='none'">
-        <figcaption class="gallery-item-caption">Meja komunitas WFH</figcaption>
+        <div class="gallery-frame">
+          <div class="gallery-photo">
+            <span class="gallery-item-icon">💻</span>
+            <img src="assets/gallery/moment-02.jpg" alt="Meja komunitas WFH" loading="lazy" onerror="this.style.display='none'">
+            <span class="gallery-zoom-hint">＋</span>
+          </div>
+          <figcaption>Meja komunitas WFH</figcaption>
+        </div>
       </figure>
-      <figure class="gallery-item" style="--gc1:#a3734a; --gc2:#3d2b1f;" tabindex="0" data-caption="Racikan manual brew">
-        <span class="gallery-item-icon">🫖</span>
-        <img src="assets/gallery/moment-03.jpg" alt="Racikan manual brew" loading="lazy" onerror="this.style.display='none'">
-        <figcaption class="gallery-item-caption">Racikan manual brew</figcaption>
+      <figure class="gallery-item taped" style="--gc1:#a3734a; --gc2:#3d2b1f;" tabindex="0" data-caption="Racikan manual brew">
+        <div class="gallery-frame">
+          <div class="gallery-photo">
+            <span class="gallery-item-icon">🫖</span>
+            <img src="assets/gallery/moment-03.jpg" alt="Racikan manual brew" loading="lazy" onerror="this.style.display='none'">
+            <span class="gallery-zoom-hint">＋</span>
+          </div>
+          <figcaption>Racikan manual brew</figcaption>
+        </div>
       </figure>
       <figure class="gallery-item" style="--gc1:#7a5636; --gc2:#241c16;" tabindex="0" data-caption="Detail interior vintage">
-        <span class="gallery-item-icon">🪴</span>
-        <img src="assets/gallery/moment-04.jpg" alt="Detail interior vintage" loading="lazy" onerror="this.style.display='none'">
-        <figcaption class="gallery-item-caption">Detail interior vintage</figcaption>
+        <div class="gallery-frame">
+          <div class="gallery-photo">
+            <span class="gallery-item-icon">🪴</span>
+            <img src="assets/gallery/moment-04.jpg" alt="Detail interior vintage" loading="lazy" onerror="this.style.display='none'">
+            <span class="gallery-zoom-hint">＋</span>
+          </div>
+          <figcaption>Detail interior vintage</figcaption>
+        </div>
       </figure>
-      <figure class="gallery-item" style="--gc1:#8c6239; --gc2:#5c4d3f;" tabindex="0" data-caption="Ngobrol santai sore hari">
-        <span class="gallery-item-icon">👥</span>
-        <img src="assets/gallery/moment-05.jpg" alt="Ngobrol santai sore hari" loading="lazy" onerror="this.style.display='none'">
-        <figcaption class="gallery-item-caption">Ngobrol santai sore hari</figcaption>
+      <figure class="gallery-item taped" style="--gc1:#8c6239; --gc2:#5c4d3f;" tabindex="0" data-caption="Ngobrol santai sore hari">
+        <div class="gallery-frame">
+          <div class="gallery-photo">
+            <span class="gallery-item-icon">👥</span>
+            <img src="assets/gallery/moment-05.jpg" alt="Ngobrol santai sore hari" loading="lazy" onerror="this.style.display='none'">
+            <span class="gallery-zoom-hint">＋</span>
+          </div>
+          <figcaption>Ngobrol santai sore hari</figcaption>
+        </div>
       </figure>
       <figure class="gallery-item" style="--gc1:#6b4a29; --gc2:#3d2b1f;" tabindex="0" data-caption="Menu andalan siap disajikan">
-        <span class="gallery-item-icon">📸</span>
-        <img src="assets/gallery/moment-06.jpg" alt="Menu andalan siap disajikan" loading="lazy" onerror="this.style.display='none'">
-        <figcaption class="gallery-item-caption">Menu andalan siap disajikan</figcaption>
+        <div class="gallery-frame">
+          <div class="gallery-photo">
+            <span class="gallery-item-icon">📸</span>
+            <img src="assets/gallery/moment-06.jpg" alt="Menu andalan siap disajikan" loading="lazy" onerror="this.style.display='none'">
+            <span class="gallery-zoom-hint">＋</span>
+          </div>
+          <figcaption>Menu andalan siap disajikan</figcaption>
+        </div>
       </figure>
-      <figure class="gallery-item" style="--gc1:#a3734a; --gc2:#241c16;" tabindex="0" data-caption="Suasana malam yang hangat">
-        <span class="gallery-item-icon">🌙</span>
-        <img src="assets/gallery/moment-07.jpg" alt="Suasana malam yang hangat" loading="lazy" onerror="this.style.display='none'">
-        <figcaption class="gallery-item-caption">Suasana malam yang hangat</figcaption>
+      <figure class="gallery-item taped" style="--gc1:#a3734a; --gc2:#241c16;" tabindex="0" data-caption="Suasana malam yang hangat">
+        <div class="gallery-frame">
+          <div class="gallery-photo">
+            <span class="gallery-item-icon">🌙</span>
+            <img src="assets/gallery/moment-07.jpg" alt="Suasana malam yang hangat" loading="lazy" onerror="this.style.display='none'">
+            <span class="gallery-zoom-hint">＋</span>
+          </div>
+          <figcaption>Suasana malam yang hangat</figcaption>
+        </div>
+      </figure>
+      <figure class="gallery-item" style="--gc1:#5c4d3f; --gc2:#241c16;" tabindex="0" data-caption="Sesi seduh pagi hari">
+        <div class="gallery-frame">
+          <div class="gallery-photo">
+            <span class="gallery-item-icon">🌤️</span>
+            <img src="assets/gallery/moment-08.jpg" alt="Sesi seduh pagi hari" loading="lazy" onerror="this.style.display='none'">
+            <span class="gallery-zoom-hint">＋</span>
+          </div>
+          <figcaption>Sesi seduh pagi hari</figcaption>
+        </div>
       </figure>
     </div>
 
-    <p class="gallery-note">Tag <a href="https://instagram.com/jelajah27_coffee" target="_blank" rel="noopener">@jelajah27_coffee</a> di foto kamu — momen terbaik akan mejeng di galeri ini.</p>
+    <p class="gallery-note">Tag <a href="https://instagram.com/jelajah27_coffee" target="_blank" rel="noopener">📷 @jelajah27_coffee</a> di foto kamu — momen terbaik akan mejeng di galeri ini.</p>
   </div>
 </section>
 
@@ -1330,6 +1447,56 @@ mobilePanel.querySelectorAll('a').forEach(a=>{
     menuToggle.setAttribute('aria-expanded','false');
   });
 });
+
+/* ============================================================
+   GALERI: buka lightbox saat kartu foto diklik / Enter
+============================================================ */
+const lightboxOverlay = document.getElementById('lightboxOverlay');
+const lightboxImg     = document.getElementById('lightboxImg');
+const lightboxIcon    = document.getElementById('lightboxIcon');
+const lightboxCaption = document.getElementById('lightboxCaption');
+const lightboxMedia   = document.getElementById('lightboxMedia');
+const lightboxClose   = document.getElementById('lightboxClose');
+let lastGalleryFocus = null;
+
+function openLightbox(item){
+  lastGalleryFocus = document.activeElement;
+  const img = item.querySelector('.gallery-photo img');
+  const icon = item.querySelector('.gallery-item-icon');
+  const caption = item.dataset.caption || '';
+  const gc1 = item.style.getPropertyValue('--gc1') || '#8c6239';
+  const gc2 = item.style.getPropertyValue('--gc2') || '#3d2b1f';
+
+  lightboxMedia.style.setProperty('--gc1', gc1);
+  lightboxMedia.style.setProperty('--gc2', gc2);
+
+  if(img && img.style.display !== 'none' && img.complete && img.naturalWidth > 0){
+    lightboxImg.src = img.src;
+    lightboxImg.alt = img.alt;
+    lightboxImg.style.display = 'block';
+    lightboxIcon.style.display = 'none';
+  } else {
+    lightboxImg.style.display = 'none';
+    lightboxIcon.style.display = 'block';
+    lightboxIcon.textContent = icon ? icon.textContent : '📷';
+  }
+  lightboxCaption.textContent = caption;
+  lightboxOverlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  lightboxClose.focus();
+}
+function closeLightbox(){
+  lightboxOverlay.classList.remove('open');
+  document.body.style.overflow = '';
+  if(lastGalleryFocus) lastGalleryFocus.focus();
+}
+document.querySelectorAll('.gallery-item').forEach(item=>{
+  item.addEventListener('click', ()=> openLightbox(item));
+  item.addEventListener('keypress', (e)=>{ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); openLightbox(item); } });
+});
+lightboxClose.addEventListener('click', closeLightbox);
+lightboxOverlay.addEventListener('click', (e)=>{ if(e.target === lightboxOverlay) closeLightbox(); });
+document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape' && lightboxOverlay.classList.contains('open')) closeLightbox(); });
 
 /* ============================================================
    REVEAL ON SCROLL
