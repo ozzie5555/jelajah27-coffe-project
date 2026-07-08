@@ -563,6 +563,106 @@ a:focus-visible, button:focus-visible{
 .country-list button .n{ font-size:11px; color:var(--ink-soft); opacity:0.5; width:18px; }
 
 /* ============================================================
+   4b. GALERI — "Momen di Kafe"
+============================================================ */
+.gallery-section{
+  padding-block:clamp(72px,10vw,120px);
+  background:var(--paper-deep);
+}
+.gallery-section .section-head{ margin-inline:auto; text-align:center; max-width:600px; }
+.gallery-section .section-head::after{ content:none; }
+
+.gallery-grid{
+  margin-top:clamp(28px,5vw,48px);
+  display:grid;
+  grid-template-columns:repeat(2, 1fr);
+  gap:12px;
+}
+@media (min-width:640px){ .gallery-grid{ grid-template-columns:repeat(3, 1fr); gap:16px; } }
+@media (min-width:960px){ .gallery-grid{ grid-template-columns:repeat(4, 1fr); gap:18px; } }
+
+.gallery-item{
+  position:relative;
+  aspect-ratio:1/1;
+  border-radius:var(--radius-md);
+  overflow:hidden;
+  cursor:pointer;
+  border:1px solid var(--line);
+  background:linear-gradient(155deg, var(--gc1, #8c6239), var(--gc2, #3d2b1f) 75%);
+}
+.gallery-item.tall{ grid-row:span 2; aspect-ratio:auto; }
+@media (max-width:639px){ .gallery-item.tall{ grid-row:span 1; aspect-ratio:1/1; } }
+
+.gallery-item img{
+  position:absolute; inset:0;
+  width:100%; height:100%; object-fit:cover;
+  z-index:1;
+  transition:transform .5s ease;
+}
+.gallery-item:hover img{ transform:scale(1.06); }
+.gallery-item-icon{
+  position:absolute; inset:0;
+  display:flex; align-items:center; justify-content:center;
+  font-size:26px; opacity:0.85; z-index:0;
+}
+.gallery-item-caption{
+  position:absolute; left:0; right:0; bottom:0; z-index:2;
+  padding:20px 12px 10px;
+  background:linear-gradient(180deg, transparent, rgba(20,14,10,0.75));
+  color:#f2e9db; font-size:12px; font-weight:500;
+  opacity:0; transform:translateY(6px);
+  transition:opacity .25s ease, transform .25s ease;
+}
+.gallery-item:hover .gallery-item-caption,
+.gallery-item:focus-visible .gallery-item-caption{ opacity:1; transform:translateY(0); }
+
+.gallery-note{
+  margin-top:22px; text-align:center;
+  font-size:13.5px; color:var(--ink-soft);
+}
+.gallery-note a{ color:var(--accent-deep); font-weight:600; text-decoration:none; }
+.gallery-note a:hover{ text-decoration:underline; }
+
+.lightbox-overlay{
+  position:fixed; inset:0; z-index:210;
+  background:rgba(20,14,10,0.75);
+  display:flex; align-items:center; justify-content:center;
+  padding:20px;
+  opacity:0; visibility:hidden;
+  transition:opacity .3s ease, visibility 0s linear .3s;
+}
+.lightbox-overlay.open{ opacity:1; visibility:visible; transition:opacity .3s ease; }
+.lightbox-card{
+  width:min(560px, 100%);
+  background:#fdf8ef;
+  border-radius:var(--radius-md);
+  overflow:hidden;
+  transform:scale(0.95);
+  transition:transform .5s cubic-bezier(.2,.8,.2,1);
+}
+.lightbox-overlay.open .lightbox-card{ transform:scale(1); }
+.lightbox-media{
+  aspect-ratio:4/3;
+  background:linear-gradient(155deg, var(--gc1, #8c6239), var(--gc2, #3d2b1f) 75%);
+  display:flex; align-items:center; justify-content:center;
+  position:relative;
+}
+.lightbox-media img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+.lightbox-media span{ font-size:40px; z-index:1; }
+.lightbox-caption{
+  padding:16px 20px 20px;
+  display:flex; align-items:center; justify-content:space-between; gap:12px;
+}
+.lightbox-caption p{ font-size:14px; color:var(--ink-soft); }
+.lightbox-close{
+  width:34px; height:34px; border-radius:50%; border:1px solid var(--line);
+  background:#fff; cursor:pointer; flex-shrink:0;
+  display:flex; align-items:center; justify-content:center; color:var(--ink-soft);
+  transition:background .2s ease, color .2s ease;
+}
+.lightbox-close:hover{ background:var(--espresso); color:#fff; }
+
+/* ============================================================
    5. BUKU MENU
 ============================================================ */
 .menu-section{
@@ -595,17 +695,46 @@ a:focus-visible, button:focus-visible{
 
 .menu-items{ list-style:none; margin:0; padding:8px 8px; }
 .menu-item{
-  display:flex; justify-content:space-between; gap:16px;
-  align-items:baseline;
-  padding:16px 18px;
+  display:flex; gap:14px; align-items:flex-start;
+  padding:14px 10px;
   border-bottom:1px dashed var(--line);
 }
 .menu-item:last-child{ border-bottom:none; }
+
+.menu-thumb{
+  position:relative;
+  width:60px; height:60px;
+  border-radius:12px;
+  overflow:hidden;
+  flex-shrink:0;
+  background:linear-gradient(155deg, var(--accent), var(--espresso-2) 80%);
+  display:flex; align-items:center; justify-content:center;
+}
+.menu-thumb-icon{ position:absolute; font-size:20px; z-index:0; opacity:0.9; }
+.menu-thumb img{
+  position:relative; z-index:1;
+  width:100%; height:100%; object-fit:cover;
+}
+
+.menu-item-info{ flex:1; min-width:0; }
+.menu-item-top{
+  display:flex; align-items:baseline; justify-content:space-between; gap:8px 10px;
+  flex-wrap:wrap;
+}
+@media (max-width:380px){
+  .menu-thumb{ width:48px; height:48px; border-radius:10px; }
+  .menu-item{ gap:10px; padding:12px 6px; }
+}
 .menu-item h4{
   font-family:var(--font-body); font-weight:600; font-size:15px; color:var(--ink);
 }
+.menu-item .price{
+  font-family:var(--font-display); font-style:italic;
+  font-size:14.5px; color:var(--accent-deep); font-weight:600;
+  white-space:nowrap; flex-shrink:0;
+}
 .menu-item p{
-  margin-top:5px; font-size:13.5px; color:var(--ink-soft); max-width:38ch;
+  margin-top:5px; font-size:13.5px; color:var(--ink-soft); max-width:42ch;
 }
 
 /* ============================================================
@@ -671,6 +800,7 @@ a:focus-visible, button:focus-visible{
     <ul class="nav-links">
       <li><a href="#cerita">Cerita Kami</a></li>
       <li><a href="#peta">Peta Jelajah</a></li>
+      <li><a href="#galeri">Galeri</a></li>
       <li><a href="#menu">Buku Menu</a></li>
       <li><a href="#lokasi">Lokasi</a></li>
     </ul>
@@ -686,6 +816,7 @@ a:focus-visible, button:focus-visible{
     <ul>
       <li><a href="#cerita">Cerita Kami</a></li>
       <li><a href="#peta">Peta Jelajah</a></li>
+      <li><a href="#galeri">Galeri</a></li>
       <li><a href="#menu">Buku Menu</a></li>
       <li><a href="#lokasi">Lokasi</a></li>
     </ul>
@@ -721,7 +852,6 @@ a:focus-visible, button:focus-visible{
       <div class="story-stats">
         <div class="stat"><b>27</b><span>Negara Sumber Inspirasi</span></div>
         <div class="stat"><b>8+</b><span>Menu Signature</span></div>
-        <div class="stat"><b>01</b><span>Rumah di Semarang</span></div>
       </div>
     </div>
 
@@ -804,6 +934,74 @@ a:focus-visible, button:focus-visible{
   </div>
 </div>
 
+<!-- =============================== GALERI / MOMEN =============================== -->
+<section class="gallery-section" id="galeri">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow" style="justify-content:center;">Momen di Kafe</span>
+      <h2>Diambil dari sudut favorit pelanggan.</h2>
+      <p>Kumpulan momen di jelajah27_coffee — dari sudut baca, meja komunitas, sampai racikan manual brew.</p>
+    </div>
+
+    <div class="gallery-grid reveal" id="galleryGrid">
+      <!-- ⚠️ PLACEHOLDER: ganti src pada setiap <img> dengan foto asli kafe.
+           Jika file foto belum ada / gagal dimuat, ikon & gradasi akan tampil otomatis sebagai fallback,
+           jadi struktur ini aman dipakai sebelum foto tersedia. -->
+      <figure class="gallery-item tall" style="--gc1:#8c6239; --gc2:#3d2b1f;" tabindex="0" data-caption="Sudut baca dekat jendela">
+        <span class="gallery-item-icon">☕</span>
+        <img src="assets/gallery/moment-01.jpg" alt="Sudut baca dekat jendela" loading="lazy" onerror="this.style.display='none'">
+        <figcaption class="gallery-item-caption">Sudut baca dekat jendela</figcaption>
+      </figure>
+      <figure class="gallery-item" style="--gc1:#6b4a29; --gc2:#241c16;" tabindex="0" data-caption="Meja komunitas WFH">
+        <span class="gallery-item-icon">💻</span>
+        <img src="assets/gallery/moment-02.jpg" alt="Meja komunitas WFH" loading="lazy" onerror="this.style.display='none'">
+        <figcaption class="gallery-item-caption">Meja komunitas WFH</figcaption>
+      </figure>
+      <figure class="gallery-item" style="--gc1:#a3734a; --gc2:#3d2b1f;" tabindex="0" data-caption="Racikan manual brew">
+        <span class="gallery-item-icon">🫖</span>
+        <img src="assets/gallery/moment-03.jpg" alt="Racikan manual brew" loading="lazy" onerror="this.style.display='none'">
+        <figcaption class="gallery-item-caption">Racikan manual brew</figcaption>
+      </figure>
+      <figure class="gallery-item" style="--gc1:#7a5636; --gc2:#241c16;" tabindex="0" data-caption="Detail interior vintage">
+        <span class="gallery-item-icon">🪴</span>
+        <img src="assets/gallery/moment-04.jpg" alt="Detail interior vintage" loading="lazy" onerror="this.style.display='none'">
+        <figcaption class="gallery-item-caption">Detail interior vintage</figcaption>
+      </figure>
+      <figure class="gallery-item" style="--gc1:#8c6239; --gc2:#5c4d3f;" tabindex="0" data-caption="Ngobrol santai sore hari">
+        <span class="gallery-item-icon">👥</span>
+        <img src="assets/gallery/moment-05.jpg" alt="Ngobrol santai sore hari" loading="lazy" onerror="this.style.display='none'">
+        <figcaption class="gallery-item-caption">Ngobrol santai sore hari</figcaption>
+      </figure>
+      <figure class="gallery-item" style="--gc1:#6b4a29; --gc2:#3d2b1f;" tabindex="0" data-caption="Menu andalan siap disajikan">
+        <span class="gallery-item-icon">📸</span>
+        <img src="assets/gallery/moment-06.jpg" alt="Menu andalan siap disajikan" loading="lazy" onerror="this.style.display='none'">
+        <figcaption class="gallery-item-caption">Menu andalan siap disajikan</figcaption>
+      </figure>
+      <figure class="gallery-item" style="--gc1:#a3734a; --gc2:#241c16;" tabindex="0" data-caption="Suasana malam yang hangat">
+        <span class="gallery-item-icon">🌙</span>
+        <img src="assets/gallery/moment-07.jpg" alt="Suasana malam yang hangat" loading="lazy" onerror="this.style.display='none'">
+        <figcaption class="gallery-item-caption">Suasana malam yang hangat</figcaption>
+      </figure>
+    </div>
+
+    <p class="gallery-note">Tag <a href="https://instagram.com/jelajah27_coffee" target="_blank" rel="noopener">@jelajah27_coffee</a> di foto kamu — momen terbaik akan mejeng di galeri ini.</p>
+  </div>
+</section>
+
+<!-- lightbox galeri -->
+<div class="lightbox-overlay" id="lightboxOverlay" role="dialog" aria-modal="true" aria-label="Pratinjau foto galeri">
+  <div class="lightbox-card">
+    <div class="lightbox-media" id="lightboxMedia">
+      <span id="lightboxIcon">📷</span>
+      <img id="lightboxImg" src="" alt="" style="display:none;">
+    </div>
+    <div class="lightbox-caption">
+      <p id="lightboxCaption">Momen di jelajah27_coffee</p>
+      <button class="lightbox-close" id="lightboxClose" aria-label="Tutup pratinjau">✕</button>
+    </div>
+  </div>
+</div>
+
 <!-- =============================== BUKU MENU =============================== -->
 <section class="menu-section" id="menu">
   <div class="container">
@@ -821,16 +1019,44 @@ a:focus-visible, button:focus-visible{
         </div>
         <ul class="menu-items">
           <li class="menu-item">
-            <div><h4>Espresso Blend <span style="color:var(--accent-deep);font-weight:400;">· Signature</span></h4><p>Kopi hitam pekat, seimbang dengan rasa cokelat alami.</p></div>
+            <div class="menu-thumb"><span class="menu-thumb-icon">☕</span><img src="assets/menu/espresso-blend.jpg" alt="Espresso Blend" loading="lazy" onerror="this.style.display='none'"></div>
+            <div class="menu-item-info">
+              <div class="menu-item-top">
+                <h4>Espresso Blend <span style="color:var(--accent-deep);font-weight:400;">· Signature</span></h4>
+                <span class="price">Rp -</span>
+              </div>
+              <p>Kopi hitam pekat, seimbang dengan rasa cokelat alami.</p>
+            </div>
           </li>
           <li class="menu-item">
-            <div><h4>Madrid Latte</h4><p>Perpaduan espresso dan susu lembut, terinspirasi sudut kota Spanyol.</p></div>
+            <div class="menu-thumb"><span class="menu-thumb-icon">☕</span><img src="assets/menu/madrid-latte.jpg" alt="Madrid Latte" loading="lazy" onerror="this.style.display='none'"></div>
+            <div class="menu-item-info">
+              <div class="menu-item-top">
+                <h4>Madrid Latte</h4>
+                <span class="price">Rp -</span>
+              </div>
+              <p>Perpaduan espresso dan susu lembut, terinspirasi sudut kota Spanyol.</p>
+            </div>
           </li>
           <li class="menu-item">
-            <div><h4>Kyoto Matcha Coffee</h4><p>Kombinasi estetik matcha Jepang premium dan espresso lokal.</p></div>
+            <div class="menu-thumb"><span class="menu-thumb-icon">🍵</span><img src="assets/menu/kyoto-matcha.jpg" alt="Kyoto Matcha Coffee" loading="lazy" onerror="this.style.display='none'"></div>
+            <div class="menu-item-info">
+              <div class="menu-item-top">
+                <h4>Kyoto Matcha Coffee</h4>
+                <span class="price">Rp -</span>
+              </div>
+              <p>Kombinasi estetik matcha Jepang premium dan espresso lokal.</p>
+            </div>
           </li>
           <li class="menu-item">
-            <div><h4>Manual Brew <span style="color:var(--ink-soft);font-weight:400;">· Filter Coffee</span></h4><p>Pilihan biji kopi kurasi nusantara dan internasional.</p></div>
+            <div class="menu-thumb"><span class="menu-thumb-icon">☕</span><img src="assets/menu/manual-brew.jpg" alt="Manual Brew" loading="lazy" onerror="this.style.display='none'"></div>
+            <div class="menu-item-info">
+              <div class="menu-item-top">
+                <h4>Manual Brew <span style="color:var(--ink-soft);font-weight:400;">· Filter Coffee</span></h4>
+                <span class="price">Rp -</span>
+              </div>
+              <p>Pilihan biji kopi kurasi nusantara dan internasional.</p>
+            </div>
           </li>
         </ul>
       </div>
@@ -842,16 +1068,44 @@ a:focus-visible, button:focus-visible{
         </div>
         <ul class="menu-items">
           <li class="menu-item">
-            <div><h4>Croissant Butter</h4><p>Pastry renyah khas Prancis yang gurih, teman terbaik kopi hitam.</p></div>
+            <div class="menu-thumb"><span class="menu-thumb-icon">🥐</span><img src="assets/menu/croissant-butter.jpg" alt="Croissant Butter" loading="lazy" onerror="this.style.display='none'"></div>
+            <div class="menu-item-info">
+              <div class="menu-item-top">
+                <h4>Croissant Butter</h4>
+                <span class="price">Rp -</span>
+              </div>
+              <p>Pastry renyah khas Prancis yang gurih, teman terbaik kopi hitam.</p>
+            </div>
           </li>
           <li class="menu-item">
-            <div><h4>Traveler's Fries</h4><p>Kentang goreng renyah dengan taburan rempah rahasia penjelajah.</p></div>
+            <div class="menu-thumb"><span class="menu-thumb-icon">🍟</span><img src="assets/menu/travelers-fries.jpg" alt="Traveler's Fries" loading="lazy" onerror="this.style.display='none'"></div>
+            <div class="menu-item-info">
+              <div class="menu-item-top">
+                <h4>Traveler's Fries</h4>
+                <span class="price">Rp -</span>
+              </div>
+              <p>Kentang goreng renyah dengan taburan rempah rahasia penjelajah.</p>
+            </div>
           </li>
           <li class="menu-item">
-            <div><h4>Toast Bakar Srikaya</h4><p>Roti panggang klasik dengan selai srikaya manis gurih yang pas.</p></div>
+            <div class="menu-thumb"><span class="menu-thumb-icon">🍞</span><img src="assets/menu/toast-srikaya.jpg" alt="Toast Bakar Srikaya" loading="lazy" onerror="this.style.display='none'"></div>
+            <div class="menu-item-info">
+              <div class="menu-item-top">
+                <h4>Toast Bakar Srikaya</h4>
+                <span class="price">Rp -</span>
+              </div>
+              <p>Roti panggang klasik dengan selai srikaya manis gurih yang pas.</p>
+            </div>
           </li>
           <li class="menu-item">
-            <div><h4>Platter Sharing</h4><p>Menu kombinasi sosis dan camilan untuk dinikmati bareng sahabat.</p></div>
+            <div class="menu-thumb"><span class="menu-thumb-icon">🍽️</span><img src="assets/menu/platter-sharing.jpg" alt="Platter Sharing" loading="lazy" onerror="this.style.display='none'"></div>
+            <div class="menu-item-info">
+              <div class="menu-item-top">
+                <h4>Platter Sharing</h4>
+                <span class="price">Rp -</span>
+              </div>
+              <p>Menu kombinasi sosis dan camilan untuk dinikmati bareng sahabat.</p>
+            </div>
           </li>
         </ul>
       </div>
