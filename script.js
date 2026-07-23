@@ -136,6 +136,22 @@ const mapObserver = new IntersectionObserver(
 
 if (visitMap) mapObserver.observe(visitMap);
 
+const mapTooltip = document.querySelector(".map-tooltip");
+const journeyPoints = document.querySelectorAll(".journey-point");
+
+function showJourneyStop(point) {
+  journeyPoints.forEach((item) => item.classList.toggle("active", item === point));
+  mapTooltip.querySelector("small").textContent = `Stop ${point.dataset.order} / 27`;
+  mapTooltip.querySelector("strong").textContent = point.dataset.country;
+  mapTooltip.querySelector("span").textContent = point.dataset.city;
+}
+
+journeyPoints.forEach((point) => {
+  point.addEventListener("pointerenter", () => showJourneyStop(point));
+  point.addEventListener("focus", () => showJourneyStop(point));
+  point.addEventListener("click", () => showJourneyStop(point));
+});
+
 const newsletterForm = document.querySelector("#newsletter-form");
 const newsletterMessage = document.querySelector("#newsletter-message");
 
