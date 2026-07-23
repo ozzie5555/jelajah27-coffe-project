@@ -292,9 +292,41 @@
 
       <section class="visit" id="visit">
         <div class="visit-map" aria-hidden="true">
-          <div class="map-lines"></div>
-          <div class="map-pin"><span>J27</span></div>
-          <p>UBUD<br /><span>BALI</span></p>
+          <div class="world-map-heading">
+            <span>27 journeys · one home</span>
+            <span>08°20′S 115°05′E</span>
+          </div>
+          <svg class="world-map-svg" viewBox="0 0 1000 560" role="img">
+            <defs>
+              <filter id="map-glow"><feGaussianBlur stdDeviation="3" result="blur" /><feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge></filter>
+              <pattern id="map-grid" width="50" height="50" patternUnits="userSpaceOnUse"><path d="M 50 0 L 0 0 0 50" fill="none" /></pattern>
+            </defs>
+            <rect class="map-grid-pattern" width="1000" height="560" fill="url(#map-grid)" />
+            <g class="world-lines">
+              <path d="M70 155 L104 112 162 87 221 102 265 136 253 172 216 180 196 214 159 229 125 205 86 196 70 155Z" />
+              <path d="M202 225 L239 245 258 291 244 333 260 372 238 434 205 482 190 424 166 377 159 317 180 272 202 225Z" />
+              <path d="M312 85 L347 60 389 68 402 92 373 112 329 110 312 85Z" />
+              <path d="M428 145 L466 119 508 128 536 157 523 179 487 185 470 217 433 207 414 174 428 145Z" />
+              <path d="M475 212 L520 207 558 234 579 290 566 351 526 414 489 384 468 327 447 277 475 212Z" />
+              <path d="M525 132 L587 102 665 105 724 125 787 143 838 174 818 206 766 210 731 238 676 231 637 208 590 197 552 174 525 132Z" />
+              <path d="M638 212 L679 224 706 254 690 281 658 266 638 212Z" />
+              <path d="M724 253 L748 265 759 298 743 318 727 292 724 253Z" />
+              <path d="M793 245 L830 258 846 287 827 307 796 286 793 245Z" />
+              <path d="M824 362 L869 343 920 364 936 401 904 432 849 424 813 394 824 362Z" />
+              <path d="M949 438 L964 427 969 449 954 461 949 438Z" />
+              <path d="M737 326 L753 331 767 328 M777 334 L793 339 809 337 M815 345 L831 349" />
+            </g>
+            <g class="travel-routes" filter="url(#map-glow)">
+              <path pathLength="1" d="M470 163 Q610 65 770 186 Q820 243 802 340" />
+              <path pathLength="1" d="M213 150 Q405 252 802 340" />
+              <path pathLength="1" d="M856 385 Q842 343 802 340" />
+            </g>
+            <g class="map-stops"><circle cx="213" cy="150" r="4" /><circle cx="470" cy="163" r="4" /><circle cx="770" cy="186" r="4" /><circle cx="856" cy="385" r="4" /></g>
+            <g class="bali-destination" transform="translate(802 340)">
+              <circle class="destination-ring ring-one" r="22" /><circle class="destination-ring ring-two" r="37" /><circle class="destination-core" r="6" /><path d="M0 11 L-4 23 L4 23 Z" />
+            </g>
+          </svg>
+          <div class="route-status"><i></i><span><b>Destination 27</b> · Ubud, Bali</span></div>
         </div>
         <div class="visit-panel">
           <p class="eyebrow light">Come, stay awhile</p>

@@ -903,73 +903,6 @@ em {
   background: var(--espresso);
 }
 
-.visit-map {
-  position: relative;
-  display: grid;
-  place-items: center;
-  overflow: hidden;
-  background:
-    linear-gradient(rgba(45, 58, 41, 0.65), rgba(45, 58, 41, 0.65)),
-    url("assets/images/journey-map.webp") center / cover;
-  filter: saturate(0.65);
-}
-
-.visit-map::after {
-  position: absolute;
-  inset: 30px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  content: "";
-}
-
-.visit-map > p {
-  position: absolute;
-  right: 55px;
-  bottom: 45px;
-  margin: 0;
-  font: 500 42px/0.75 var(--serif);
-  text-align: right;
-}
-
-.visit-map > p span {
-  color: var(--gold);
-  font-size: 20px;
-  letter-spacing: 0.2em;
-}
-
-.map-pin {
-  position: relative;
-  z-index: 2;
-  display: grid;
-  place-items: center;
-  width: 64px;
-  height: 64px;
-  color: var(--espresso);
-  background: var(--gold);
-  border: 6px solid rgba(255, 255, 255, 0.28);
-  border-radius: 50% 50% 50% 0;
-  transform: rotate(-45deg);
-}
-
-.map-pin span {
-  font: 700 13px var(--serif);
-  transform: rotate(45deg);
-}
-
-.map-pin::before {
-  position: absolute;
-  width: 110px;
-  height: 110px;
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  border-radius: 50%;
-  content: "";
-  animation: ping 2.2s infinite;
-}
-
-@keyframes ping {
-  0% { transform: scale(0.5); opacity: 0; }
-  50% { opacity: 1; }
-  100% { transform: scale(1.2); opacity: 0; }
-}
 
 .visit-panel {
   display: flex;
@@ -1253,3 +1186,41 @@ footer { padding: 0 clamp(20px, 6.5vw, 96px) 24px; color: var(--cream); backgrou
 .footer-bottom a:hover { color: var(--cream); }
 @media (max-width: 1050px) and (min-width: 761px) { .footer-grid { grid-template-columns: 1.3fr .8fr 1fr; } .footer-newsletter { grid-column: 1 / -1; max-width: 460px; } }
 @media (max-width: 760px) { footer { padding: 0 20px 22px; } .footer-intro { display: block; padding: 62px 0 45px; } .footer-kicker { margin-bottom: 22px; } .footer-intro blockquote { font-size: 35px; } .back-top { position: absolute; right: 20px; margin-top: 28px; } .footer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 42px 24px; padding: 70px 0 45px; } .footer-about { grid-column: 1 / -1; } .footer-brand { display: inline-flex; } .footer-about > p { max-width: 330px; } .footer-newsletter { grid-column: 1 / -1; } .footer-bottom { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; } .footer-bottom > span:last-child { text-align: left; } }
+
+
+/* Animated vector world map — no raster asset */
+.visit-map { position: relative; isolation: isolate; display: grid; place-items: center; padding: 46px; overflow: hidden; background: radial-gradient(circle at 74% 56%, rgba(176,141,87,.15), transparent 23%), radial-gradient(circle at 20% 20%, rgba(100,124,87,.18), transparent 38%), #263027; filter: none; }
+.visit-map::before { position: absolute; inset: 0; z-index: -1; content: ""; background: repeating-linear-gradient(118deg, transparent 0 48px, rgba(255,255,255,.014) 49px 50px); }
+.visit-map::after { position: absolute; inset: 28px; z-index: 5; border: 1px solid rgba(245,239,230,.18); content: ""; pointer-events: none; }
+.world-map-heading { position: absolute; z-index: 4; top: 48px; right: 54px; left: 54px; display: flex; justify-content: space-between; color: rgba(245,239,230,.55); font: 7px var(--typewriter); letter-spacing: .16em; text-transform: uppercase; }
+.world-map-svg { position: relative; z-index: 2; width: min(100%, 850px); overflow: visible; }
+.map-grid-pattern path { stroke: rgba(245,239,230,.055); stroke-width: 1; }
+.world-lines path { fill: rgba(245,239,230,.018); stroke: rgba(222,211,191,.5); stroke-width: 1.2; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; stroke-dasharray: 1200; stroke-dashoffset: 1200; }
+.map-visible .world-lines path { animation: draw-world 2.2s cubic-bezier(.4,0,.2,1) forwards; }
+.map-visible .world-lines path:nth-child(2n) { animation-delay: .18s; }
+.map-visible .world-lines path:nth-child(3n) { animation-delay: .34s; }
+.travel-routes { opacity: 0; transition: opacity .6s 1.6s; }
+.map-visible .travel-routes { opacity: 1; }
+.travel-routes path { fill: none; stroke: #c7a56c; stroke-width: 2; stroke-linecap: round; vector-effect: non-scaling-stroke; stroke-dasharray: .025 .035; animation: route-flow 1.15s linear infinite; }
+.travel-routes path:nth-child(2) { animation-duration: 1.45s; animation-direction: reverse; }
+.travel-routes path:nth-child(3) { animation-duration: .85s; }
+.map-stops { fill: #e4c68e; opacity: 0; }
+.map-visible .map-stops { animation: reveal-stops .5s 1.8s forwards; }
+.map-stops circle { filter: drop-shadow(0 0 5px rgba(228,198,142,.8)); }
+.bali-destination { fill: #d3ae6e; stroke: #d3ae6e; opacity: 0; }
+.map-visible .bali-destination { animation: reveal-stops .5s 2.05s forwards; }
+.destination-ring { fill: none; stroke-width: 1; transform-box: fill-box; transform-origin: center; animation: destination-pulse 2.4s ease-out infinite; }
+.destination-ring.ring-two { animation-delay: 1.15s; }
+.destination-core { stroke: none; filter: drop-shadow(0 0 8px #d3ae6e); }
+.bali-destination > path { stroke: none; }
+.route-status { position: absolute; z-index: 4; right: 54px; bottom: 48px; display: flex; align-items: center; gap: 10px; color: rgba(245,239,230,.62); font: 8px var(--typewriter); letter-spacing: .08em; text-transform: uppercase; opacity: 0; transform: translateY(8px); }
+.map-visible .route-status { opacity: 1; transform: none; transition: opacity .6s 2.1s, transform .6s 2.1s; }
+.route-status i { width: 7px; height: 7px; background: var(--gold); border-radius: 50%; box-shadow: 0 0 0 5px rgba(176,141,87,.16); animation: status-blink 1.8s ease-in-out infinite; }
+.route-status b { color: var(--cream); font-weight: 500; }
+@keyframes draw-world { to { stroke-dashoffset: 0; fill: rgba(245,239,230,.035); } }
+@keyframes route-flow { to { stroke-dashoffset: -.12; } }
+@keyframes reveal-stops { to { opacity: 1; } }
+@keyframes destination-pulse { 0% { transform: scale(.45); opacity: 0; } 35% { opacity: .85; } 100% { transform: scale(1.4); opacity: 0; } }
+@keyframes status-blink { 50% { opacity: .35; } }
+@media (max-width: 760px) { .visit-map { min-height: 410px; padding: 38px 18px; } .visit-map::after { inset: 16px; } .world-map-heading { top: 30px; right: 30px; left: 30px; } .world-map-heading span:last-child { display: none; } .world-map-svg { width: 115%; max-width: none; } .route-status { right: 30px; bottom: 30px; } }
+@media (prefers-reduced-motion: reduce) { .world-lines path { stroke-dashoffset: 0; fill: rgba(245,239,230,.035); } .travel-routes, .map-stops, .bali-destination, .route-status { opacity: 1; transform: none; } .travel-routes path, .destination-ring, .route-status i { animation: none !important; } }

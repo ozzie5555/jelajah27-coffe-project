@@ -123,6 +123,19 @@ filterButtons.forEach((button) => {
   });
 });
 
+const visitMap = document.querySelector(".visit-map");
+const mapObserver = new IntersectionObserver(
+  ([entry]) => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add("map-visible");
+      mapObserver.unobserve(entry.target);
+    }
+  },
+  { threshold: 0.28 }
+);
+
+if (visitMap) mapObserver.observe(visitMap);
+
 const newsletterForm = document.querySelector("#newsletter-form");
 const newsletterMessage = document.querySelector("#newsletter-message");
 
