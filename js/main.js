@@ -1,0 +1,11 @@
+import { initNavigation } from "./navigation.js";
+import { initJourneyCollection } from "./journey.js";
+import { initGalleryFilters } from "./gallery.js";
+import { initTravelMap } from "./map.js";
+import { initNewsletter } from "./newsletter.js";
+
+initNavigation();
+initJourneyCollection();
+initGalleryFilters();
+initTravelMap();
+initNewsletter();
