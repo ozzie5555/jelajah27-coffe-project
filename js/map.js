@@ -25,7 +25,15 @@ export async function initTravelMap() {
     { threshold: 0.28 }
   );
 
-  mapObserver.observe(visitMap);
+  const mapBounds = visitMap.getBoundingClientRect();
+  const mapIsAlreadyVisible =
+    mapBounds.top < window.innerHeight && mapBounds.bottom > 0;
+
+  if (mapIsAlreadyVisible) {
+    visitMap.classList.add("map-visible");
+  } else {
+    mapObserver.observe(visitMap);
+  }
 
   const journeyPoints = container.querySelectorAll(".journey-point");
 

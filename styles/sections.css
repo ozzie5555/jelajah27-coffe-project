@@ -16,7 +16,7 @@
 }
 
 .journey-media {
-  background: url("assets/images/journey-map.webp") center / cover;
+  background: url("../assets/images/journey-map.webp") center / cover;
   transform: scale(1.02);
 }
 
@@ -201,12 +201,12 @@
   transform: scale(1.045);
 }
 
-.g-hero { background-image: url("assets/images/hero-coffee.webp"); background-position: 76% center; }
-.g-cups { background-image: url("assets/images/coffee-collection.webp"); background-position: 60% center; }
-.g-map { background-image: url("assets/images/journey-map.webp"); background-position: 50% center; }
-.g-detail { background-image: url("assets/images/coffee-collection.webp"); background-position: center 70%; }
-.g-door { background-image: url("assets/images/hero-coffee.webp"); background-position: center; }
-.g-camera { background-image: url("assets/images/journey-map.webp"); background-position: 8% center; }
+.g-hero { background-image: url("../assets/images/hero-coffee.webp"); background-position: 76% center; }
+.g-cups { background-image: url("../assets/images/coffee-collection.webp"); background-position: 60% center; }
+.g-map { background-image: url("../assets/images/journey-map.webp"); background-position: 50% center; }
+.g-detail { background-image: url("../assets/images/coffee-collection.webp"); background-position: center 70%; }
+.g-door { background-image: url("../assets/images/hero-coffee.webp"); background-position: center; }
+.g-camera { background-image: url("../assets/images/journey-map.webp"); background-position: 8% center; }
 
 .gallery-item figcaption {
   position: absolute;
@@ -257,9 +257,9 @@
   min-height: 310px;
 }
 
-.journal-map { background-image: url("assets/images/journey-map.webp"); background-position: 44% center; }
-.journal-cup { background-image: url("assets/images/coffee-collection.webp"); background-position: 48% center; }
-.journal-home { background-image: url("assets/images/hero-coffee.webp"); background-position: 68% center; }
+.journal-map { background-image: url("../assets/images/journey-map.webp"); background-position: 44% center; }
+.journal-cup { background-image: url("../assets/images/coffee-collection.webp"); background-position: 48% center; }
+.journal-home { background-image: url("../assets/images/hero-coffee.webp"); background-position: 68% center; }
 
 .journal-content {
   padding: 25px;
@@ -438,7 +438,7 @@ footer {
   .hero-media {
     background:
       linear-gradient(0deg, rgba(12, 9, 7, 0.9), rgba(12, 9, 7, 0.18) 70%),
-      url("assets/images/hero-coffee.webp") 64% center / cover;
+      url("../assets/images/hero-coffee.webp") 64% center / cover;
   }
   .hero-content { width: auto; margin: 0 20px; padding: 0 0 105px; }
   .hero h1 { font-size: clamp(58px, 19vw, 82px); }
