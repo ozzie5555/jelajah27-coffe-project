@@ -26,6 +26,7 @@ js/
   navigation.js            Mobile menu, sticky header, reveal effects
   journey.js               Featured journey interaction
   gallery.js               Gallery filters
+  menu.js                  Food and beverage category tabs
   map.js                   SVG map loading and stop tooltips
   newsletter.js            Newsletter feedback and footer year
 assets/map/world-map.svg    Country boundaries and 27 travel points

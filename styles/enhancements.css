@@ -14,9 +14,6 @@
   .story-copy { padding-top: 52px; }
   .story-copy .lead { font-size: 20px; }
   .story-quote { margin-top: 70px; padding-top: 32px; font-size: clamp(28px, 3.2vw, 46px); }
-  .coffee-grid { margin-top: 52px; }
-  .coffee-photo { height: clamp(260px, 25vw, 330px); }
-  .coffee-info h3 { font-size: 22px; }
   .journey { min-height: 700px; }
   .journey-content { width: min(580px, 53vw); margin-right: 7vw; padding-block: 70px; }
   .journey-title h2 { font-size: clamp(66px, 6.6vw, 94px); }
@@ -173,3 +170,7 @@ footer { padding: 0 clamp(20px, 6.5vw, 96px) 24px; color: var(--cream); backgrou
 .world-map-container { display: contents; }
 .map-loading, .map-error { position: absolute; z-index: 2; color: rgba(245,239,230,.55); font: 8px var(--typewriter); letter-spacing: .14em; text-transform: uppercase; }
 .map-error { color: #e3b5a7; }
+
+
+@media (max-width: 920px) { .menu-layout { grid-template-columns: minmax(0,.72fr) minmax(0,1.28fr); gap: 34px; } .menu-visual { min-height: 500px; } .menu-item > div { align-items: flex-start; flex-direction: column; gap: 5px; } }
+@media (max-width: 760px) { .menu-heading > p { margin-top: 28px; } .menu-layout { display: block; margin-top: 42px; } .menu-visual { min-height: 300px; margin-bottom: 38px; background-position: 30% 55%; } .menu-visual-label { top: 30px; right: 30px; left: 30px; } .menu-visual figcaption { right: 30px; bottom: 32px; left: 30px; font-size: 37px; } .menu-tabs { margin-right: -20px; padding-right: 20px; } .menu-tabs button { flex: 0 0 auto; padding-right: 20px; padding-left: 20px; } .menu-panel { min-height: 365px; } .menu-item { gap: 10px; min-height: 64px; } .menu-item h3 { font-size: 25px; } .menu-item small { font-size: 5px; } .menu-footnote { align-items: flex-start; flex-direction: column; gap: 7px; } }
